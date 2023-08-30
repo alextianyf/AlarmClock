@@ -1,18 +1,15 @@
 #include <Arduino.h>
+#include "5641AS.h"
 
-// put function declarations here:
-int myFunction(int, int);
+#define Seg_on HIGH
+#define D_control_on LOW
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);
+  LED_Init();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  LED_on();
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
