@@ -4,6 +4,10 @@
 #include <Arduino.h>
 
 void LED_Init();
+void display_single(int pos, int num);
+void display();
+void LED_Clear();
 void LED_on();
+void displayTime();
 
 #endif

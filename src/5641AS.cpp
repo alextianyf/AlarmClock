@@ -1,6 +1,7 @@
 #include "5641AS.h"
+#include <TimeLib.h>
 
-#define Duration 5
+int digits[4] = {0,0,0,0};
 
 //Segment Pin number
 int A = 7;
@@ -21,7 +22,6 @@ int D4 = 17;//A3
 
 int Control_Pin_Array[4] = {D1, D2, D3, D4};
 
-
 int Number_Array[10][7] = {
    //A  B  C  D  E  F  G
     {1, 1, 1, 1, 1, 1, 0},//NUMBER 0
@@ -38,7 +38,7 @@ int Number_Array[10][7] = {
 
 void LED_Init(){
     //setting segment array connected port as OUTPUT mode and LOW
-    for (int i = 0; i < 8; i++){
+    for (int i = 0; i < 7; i++){
         pinMode(Segment_Array[i] ,OUTPUT);
         digitalWrite(Segment_Array[i], LOW);
     }
@@ -56,37 +56,36 @@ Parameters:
     pos: the position of the LED
     num: the actual number will be displayed
 */
-void display(int pos, int num){
-    
-    digitalWrite(Control_Pin_Array[(pos-1)], LOW);
-    
-    for(int i = 0; i < 8; i ++){
-        digitalWrite(Segment_Array[i], Number_Array[num][i]);
-    }
+void display_single(int pos, int num) {
+  for (int i = 0; i < 7; i++) {
+    digitalWrite(Segment_Array[i], Number_Array[num][i]);
+  }
 }
 
 void LED_Clear(){
-    for (int i = 0; i < 4; i++){
-        pinMode(Control_Pin_Array[i] ,OUTPUT);
-        digitalWrite(Control_Pin_Array[i], HIGH);
+    for (int i = 0; i < 7; i++) {
+      digitalWrite(Segment_Array[i], LOW);
     }
+    // for (int i = 0; i < 4; i++) {
+    //   digitalWrite(Control_Pin_Array[i], HIGH);
+    // }
 }
 
-void LED_on(){
-    display(1,1);
-    delay(Duration);
-    LED_Clear();
+void displayTime() {
+  digits[0] = minute() / 10;
+  digits[1] = minute() % 10;
+  digits[2] = second() / 10;
+  digits[3] = second() % 10;
 
-    display(2,6);
-    delay(Duration);
-    LED_Clear();
-
-    display(3,4);
-    delay(Duration);
-    LED_Clear();
-
-    display(4,8);
-    delay(Duration);
-    LED_Clear();
+  for (int i = 0; i < 4; i++) {
+    digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
+    display_single(i, digits[i]); // Display the current digit
+    
+    //delay(1); // Optional - A brief delay to reduce flicker
+    
+    LED_Clear();//Clear all the segment
+    
+    digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
+  }
 }
 
