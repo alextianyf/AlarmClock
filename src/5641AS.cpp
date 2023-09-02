@@ -1,7 +1,12 @@
 #include "5641AS.h"
 #include <TimeLib.h>
+#include "alarmAndPushbutton.h"
 
+//use to store LED displayed number
 int digits[4] = {0,0,0,0};
+int alarmDigits[4] = {0,0,0,0};
+
+
 
 //Segment Pin number
 int A = 7;
@@ -37,21 +42,24 @@ int Number_Array[10][7] = {
 };
 
 void LED_Init(){
-    //setting segment array connected port as OUTPUT mode and LOW
-    for (int i = 0; i < 7; i++){
-        pinMode(Segment_Array[i] ,OUTPUT);
-        digitalWrite(Segment_Array[i], LOW);
-    }
+  for(int i = 0; i < 4; i++){
+    digits[i] = 0;
+  }
+  //setting segment array connected port as OUTPUT mode and LOW
+  for (int i = 0; i < 7; i++){
+    pinMode(Segment_Array[i] ,OUTPUT);
+    digitalWrite(Segment_Array[i], LOW);
+  }
     
-    //setting LED control connect port as OUTPUT mode and HIGH
-    for (int i = 0; i < 4; i++){
-        pinMode(Control_Pin_Array[i] ,OUTPUT);
-        digitalWrite(Control_Pin_Array[i], HIGH);
-    }
+  //setting LED control connect port as OUTPUT mode and HIGH
+  for (int i = 0; i < 4; i++){
+    pinMode(Control_Pin_Array[i] ,OUTPUT);
+    digitalWrite(Control_Pin_Array[i], HIGH);
+  }
 }
 
 /*
-OBJECTIVE: Display a number
+OBJECTIVE: Display number on a designated position
 Parameters:
     pos: the position of the LED
     num: the actual number will be displayed
@@ -63,12 +71,9 @@ void display_single(int pos, int num) {
 }
 
 void LED_Clear(){
-    for (int i = 0; i < 7; i++) {
-      digitalWrite(Segment_Array[i], LOW);
-    }
-    // for (int i = 0; i < 4; i++) {
-    //   digitalWrite(Control_Pin_Array[i], HIGH);
-    // }
+  for (int i = 0; i < 7; i++) {
+    digitalWrite(Segment_Array[i], LOW);
+  }
 }
 
 void displayTime() {
@@ -88,4 +93,24 @@ void displayTime() {
     digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
   }
 }
+
+// void Pin2Interrupt(){
+//   //button1Pressed = true;
+//   //Serial.println("test");
+//   if (millis() - lastDebounceTime1 > debounceDelay) {
+//     button1Pressed = true;
+//   }
+//   lastDebounceTime1 = millis();
+
+//   // for (int i = 0; i < 4; i++) {
+//   //   digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
+//   //   display_single(i, alarmDigits[i]); // Display the current digit
+    
+//   //   //delay(1); // Optional - A brief delay to reduce flicker
+    
+//   //   LED_Clear();//Clear all the segment
+    
+//   //   digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
+//   // }
+// }
 

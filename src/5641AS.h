@@ -9,5 +9,8 @@ void display();
 void LED_Clear();
 void LED_on();
 void displayTime();
+void alarm_Init();
+
+//volatile extern bool button2Pressed = false;
 
 #endif
