@@ -16,5 +16,6 @@ void time_on();
 //volatile extern bool button2Pressed = false;
 extern int Control_Pin_Array[4];
 extern int currentRealTimeDisplayPosition;
+void RealTimeInc();
 
 #endif

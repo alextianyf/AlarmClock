@@ -23,7 +23,6 @@ void loop() {
   switch (currentState)
   {
     case REALTIME:
-      //Serial.println(currentRealTimeDisplayPosition);
       RealTimeDisplay();
 
       if(button1Release()){
@@ -31,14 +30,14 @@ void loop() {
         button1Pressed = false;
       }
       
-      if(button2Pressed && digitalRead(pushButton2) == LOW){
-        currentState = INCREMENT;
-      }
+      // if(button2Release()){
+      //   currentState = INCREMENT;
+      //   button1Pressed = false;
+      // }
 
     break;
 
     case REALTIMEADJUSTMENT:
-      //Serial.println(currentRealTimeDisplayPosition);
       RealTimeaAdjustment();
       
       if(button1Release()){
@@ -49,6 +48,11 @@ void loop() {
           currentState = ALARM;
           button1Pressed = false;
         }
+      }
+
+      if(button2Release()){
+        RealTimeInc();
+        button2Pressed = false;
       }
     break;
 
@@ -64,6 +68,11 @@ void loop() {
           button1Pressed = false;
         }
       }
+
+      if(button2Release()){
+        AlarmTimeInc();
+        button2Pressed = false;
+      }
     break;
   
     case INCREMENT:
@@ -75,13 +84,6 @@ void loop() {
     default:
       break;
   }
-  // //LOW detection when finger release the switch
-  // if(button1Pressed && digitalRead(pushButton1) == LOW){
-  //   Serial.println("button1");
-  //   button1Pressed = false;
-  // }
-  
-
   
 }
 

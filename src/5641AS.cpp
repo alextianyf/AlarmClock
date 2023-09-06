@@ -124,6 +124,57 @@ void RealTimeaAdjustment(){
   }
 
 }
- 
 
+// void RealTimeInc(){
+//   int updateTime = 0;
+//   if(currentRealTimeDisplayPosition == 0){
+//     updateTime = minute() + 10;
+//     setTime(hour(), updateTime, second(),0,0,0);
+//   }
+//   if(currentRealTimeDisplayPosition == 1){
+//     updateTime = minute() + 1;
+//     setTime(hour(), updateTime, second(),0,0,0);
+//   }
+//   if(currentRealTimeDisplayPosition == 2){
+//     updateTime = second() + 10;
+//     setTime(hour(), minute(), updateTime,0,0,0);
+//   }
+//   if(currentRealTimeDisplayPosition == 3){
+//     updateTime = second() + 1;
+//     setTime(hour(), minute(), updateTime,0,0,0);
+//   }
+// }
+
+void RealTimeInc() {
+  int newHour = hour();
+  int newMinute = minute();
+  int newSecond = second();
+
+  // Determine which time component to increment based on currentRealTimeDisplayPosition
+  if (currentRealTimeDisplayPosition == 0) {
+    newMinute += 10;
+  } else if (currentRealTimeDisplayPosition == 1) {
+    newMinute += 1;
+  } else if (currentRealTimeDisplayPosition == 2) {
+    newSecond += 10;
+  } else if (currentRealTimeDisplayPosition == 3) {
+    newSecond += 1;
+  }
+
+  // Handle minute and second overflow
+  if (newSecond >= 60) {
+    newSecond = 0;
+    newMinute += 1;
+  }
+  if (newMinute >= 60) {
+    newMinute = 0;
+    newHour += 1;
+  }
+  if (newHour >= 24) {
+    newHour = 0; // Reset hours if it goes beyond 23
+  }
+
+  // Set the new time
+  setTime(newHour, newMinute, newSecond, 0, 0, 0);
+}
 

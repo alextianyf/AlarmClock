@@ -27,6 +27,13 @@ bool button1Release(){
   return false;
 }
 
+bool button2Release(){
+  if(button2Pressed && digitalRead(pushButton2) == LOW){
+    return true;
+  }
+  return false;
+}
+
 void Pin2Interrupt(){
   if (millis() - currentMillis > debounceDelay) {
     button1Pressed = true;
@@ -79,3 +86,18 @@ void alarmTimeDisplay(){
 
 }
 
+void AlarmTimeInc() {
+  alarmDigits[currentDisplayPosition]++;
+  if(alarmDigits[0]>=3){
+    alarmDigits[0] = 0;
+  }
+  if(alarmDigits[1]>=5){
+    alarmDigits[1] = 0;
+  }
+  if(alarmDigits[2]>=6){
+    alarmDigits[2] = 0;
+  }
+  if(alarmDigits[3]>=9){
+    alarmDigits[3] = 0;
+  }
+}

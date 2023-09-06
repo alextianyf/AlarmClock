@@ -17,5 +17,7 @@ extern int currentDisplayPosition;
 void alarm_Init();
 void alarmTimeDisplay();
 bool button1Release();
+bool button2Release();
+void AlarmTimeInc();
 
 #endif
