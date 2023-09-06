@@ -109,85 +109,21 @@ void RealTimeaAdjustment(){
 
   bool displayDigits = ((realTimeCounter % 2) == 0);
 
-  
-  // if(displayDigits){
-  //   for (int i = 0; i < 4; i++) {
-      
-
-  //     if( i == currentRealTimeDisplayPosition){
-  //       digitalWrite(Control_Pin_Array[i], LOW);
-  //       display_single(i,digits[i]);
-  //     }else{
-  //       LED_Clear();
-  //     }
-  //     digitalWrite(Control_Pin_Array[i], HIGH);
-  //   }
-  // }
-
+  if(displayDigits){
+    RealTimeDisplay();
+  }else{
+    for (int i = 0; i < 4; i++) {
+      if(i != currentRealTimeDisplayPosition){
+        digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
+        display_single(i, digits[i]); // Display the current digit
+        
+        LED_Clear();//Clear all the segment
+      }
+      digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
+    }
+  }
 
 }
-  // if(displayDigits){
-  //   digitalWrite(Control_Pin_Array[currentRealTimeDisplayPosition], HIGH);
-  // }else{
-    
-  //   for (int i = 0; i < 4; i++) {
-  //     if(i!=currentRealTimeDisplayPosition){
-  //       digitalWrite(Control_Pin_Array[i], LOW);
-  //     }
-  //   }
-  // }
+ 
 
-  // for(int i = 0; i < 4; i++){
-  //   digitalWrite(Control_Pin_Array[i], LOW);
-  //   if (displayDigits) {
-  //     display_single(i, digits[i]);
-  //     LED_Clear();
-  //     //RealTimeDisplay();
-  //   }
-  //   else{
-  //     LED_Clear();
-  //     for (int i = 0; i < 4; i++) {
-  //       if (i != currentRealTimeDisplayPosition){
-  //         digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
-  //         display_single(i, digits[i]); // Display the current digit
-  //       }
-  //       //delay(1); // Optional - A brief delay to reduce flicker
-        
-  //       LED_Clear();//Clear all the segment
-        
-  //       digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
-  //     }
-
-  //     // if( i == currentRealTimeDisplayPosition){
-  //     //   LED_Clear();
-  //     // }
-  //     // else{
-  //     //   display_single(i, digits[i]);
-  //     // }
-  //   }
-  //   LED_Clear();
-  //   digitalWrite(Control_Pin_Array[i], HIGH);
-  // }
-
-//}
-
-// void Pin2Interrupt(){
-//   //button1Pressed = true;
-//   //Serial.println("test");
-//   if (millis() - lastDebounceTime1 > debounceDelay) {
-//     button1Pressed = true;
-//   }
-//   lastDebounceTime1 = millis();
-
-//   // for (int i = 0; i < 4; i++) {
-//   //   digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
-//   //   display_single(i, alarmDigits[i]); // Display the current digit
-    
-//   //   //delay(1); // Optional - A brief delay to reduce flicker
-    
-//   //   LED_Clear();//Clear all the segment
-    
-//   //   digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
-//   // }
-// }
 

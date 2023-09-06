@@ -46,10 +46,11 @@ void loop() {
         button1Pressed = false;
         if(currentRealTimeDisplayPosition >= 4){
           currentRealTimeDisplayPosition = 0;
-          currentState = REALTIME;
+          currentState = ALARM;
           button1Pressed = false;
         }
       }
+    break;
 
     case ALARM:
       alarmTimeDisplay();
@@ -69,7 +70,7 @@ void loop() {
       Serial.println("button2");
       button2Pressed = false;
       currentState = REALTIME;
-      break;
+    break;
     
     default:
       break;
