@@ -8,9 +8,13 @@ void display_single(int pos, int num);
 void display();
 void LED_Clear();
 void LED_on();
-void displayTime();
+void RealTimeDisplay();
+void RealTimeaAdjustment();
 void alarm_Init();
+void time_on();
 
 //volatile extern bool button2Pressed = false;
+extern int Control_Pin_Array[4];
+extern int currentRealTimeDisplayPosition;
 
 #endif

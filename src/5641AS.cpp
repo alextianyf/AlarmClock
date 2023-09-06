@@ -2,11 +2,13 @@
 #include <TimeLib.h>
 #include "alarmAndPushbutton.h"
 
+unsigned long RealTimelastLEDChange = 0;
+int currentRealTimeDisplayPosition = 0;
+const int RealTimeUpdateInterval = 500;
+int realTimeCounter = 0;
+
 //use to store LED displayed number
 int digits[4] = {0,0,0,0};
-int alarmDigits[4] = {0,0,0,0};
-
-
 
 //Segment Pin number
 int A = 7;
@@ -76,12 +78,14 @@ void LED_Clear(){
   }
 }
 
-void displayTime() {
+void time_on(){
   digits[0] = minute() / 10;
   digits[1] = minute() % 10;
   digits[2] = second() / 10;
   digits[3] = second() % 10;
+}
 
+void RealTimeDisplay() {
   for (int i = 0; i < 4; i++) {
     digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
     display_single(i, digits[i]); // Display the current digit
@@ -93,6 +97,79 @@ void displayTime() {
     digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
   }
 }
+
+
+void RealTimeaAdjustment(){
+
+  unsigned long realTime = millis();
+  if (realTime - RealTimelastLEDChange > RealTimeUpdateInterval) {
+    realTimeCounter ++;
+    RealTimelastLEDChange = millis();
+  }
+
+  bool displayDigits = ((realTimeCounter % 2) == 0);
+
+  
+  // if(displayDigits){
+  //   for (int i = 0; i < 4; i++) {
+      
+
+  //     if( i == currentRealTimeDisplayPosition){
+  //       digitalWrite(Control_Pin_Array[i], LOW);
+  //       display_single(i,digits[i]);
+  //     }else{
+  //       LED_Clear();
+  //     }
+  //     digitalWrite(Control_Pin_Array[i], HIGH);
+  //   }
+  // }
+
+
+}
+  // if(displayDigits){
+  //   digitalWrite(Control_Pin_Array[currentRealTimeDisplayPosition], HIGH);
+  // }else{
+    
+  //   for (int i = 0; i < 4; i++) {
+  //     if(i!=currentRealTimeDisplayPosition){
+  //       digitalWrite(Control_Pin_Array[i], LOW);
+  //     }
+  //   }
+  // }
+
+  // for(int i = 0; i < 4; i++){
+  //   digitalWrite(Control_Pin_Array[i], LOW);
+  //   if (displayDigits) {
+  //     display_single(i, digits[i]);
+  //     LED_Clear();
+  //     //RealTimeDisplay();
+  //   }
+  //   else{
+  //     LED_Clear();
+  //     for (int i = 0; i < 4; i++) {
+  //       if (i != currentRealTimeDisplayPosition){
+  //         digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
+  //         display_single(i, digits[i]); // Display the current digit
+  //       }
+  //       //delay(1); // Optional - A brief delay to reduce flicker
+        
+  //       LED_Clear();//Clear all the segment
+        
+  //       digitalWrite(Control_Pin_Array[i], HIGH); // Deactivate the current digit
+  //     }
+
+  //     // if( i == currentRealTimeDisplayPosition){
+  //     //   LED_Clear();
+  //     // }
+  //     // else{
+  //     //   display_single(i, digits[i]);
+  //     // }
+  //   }
+  //   LED_Clear();
+  //   digitalWrite(Control_Pin_Array[i], HIGH);
+  // }
+
+//}
 
 // void Pin2Interrupt(){
 //   //button1Pressed = true;

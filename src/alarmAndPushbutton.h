@@ -12,7 +12,10 @@ extern volatile bool button2Pressed;
 extern volatile unsigned long lastDebounceTime1;
 extern volatile unsigned long lastDebounceTime2;
 extern const unsigned long debounceDelay; // Adjust as needed
+extern int currentDisplayPosition;
 
 void alarm_Init();
+void alarmTimeDisplay();
+bool button1Release();
 
 #endif
