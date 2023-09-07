@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "alarmAndPushbutton.h"
 #include "5641AS.h"
+#include <TimeLib.h>
 
 const int pushButton1 = 2;
 const int pushButton2 = 3;
@@ -19,6 +20,8 @@ int currentDisplayPosition = 0;
 const int segmentUpdateInterval = 500;
 
 int alarmDigits[4] = {0,7,0,0};
+
+bool alarmActive = true;
 
 bool button1Release(){
   if(button1Pressed && digitalRead(pushButton1) == LOW){
@@ -58,6 +61,8 @@ void alarm_Init(){
 
     attachInterrupt(digitalPinToInterrupt(pushButton1), Pin2Interrupt, RISING);
     attachInterrupt(digitalPinToInterrupt(pushButton2), Pin3Interrupt, RISING);
+
+    alarmActive = true;
 }
 
 void alarmTimeDisplay(){
@@ -91,7 +96,7 @@ void AlarmTimeInc() {
   if(alarmDigits[0]>=3){
     alarmDigits[0] = 0;
   }
-  if(alarmDigits[1]>=5){
+  if(alarmDigits[1]>=10){
     alarmDigits[1] = 0;
   }
   if(alarmDigits[2]>=6){
@@ -99,5 +104,26 @@ void AlarmTimeInc() {
   }
   if(alarmDigits[3]>=9){
     alarmDigits[3] = 0;
+  }
+}
+
+bool alarm_triggered(){
+  int hour10 = hour() / 10;
+  int hour01 = hour() % 10;
+  int min10 = minute() / 10;
+  int min01 = minute() % 10;
+  if(alarmDigits[0] == hour10 && alarmDigits[1] == hour01 && alarmDigits[2] == min10 && alarmDigits[3] == min01){
+    //alarmActive = true;
+    return true;
+  }
+  return false;
+}
+
+void alarmResume(){
+
+  int temp = alarmDigits[3] + 1;
+  //Serial.println(temp);
+  if(alarmActive == false && temp == digits[3]){
+    alarmActive = true;
   }
 }

@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+extern int digits[4];
+
 void LED_Init();
 void display_single(int pos, int num);
 void display();

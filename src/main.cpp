@@ -2,11 +2,12 @@
 #include "5641AS.h"
 #include <TimeLib.h>
 #include "alarmAndPushbutton.h"
+#include "activeBuzzer.h"
 
 #define REALTIME 0
 #define REALTIMEADJUSTMENT 1
 #define ALARM 2
-#define INCREMENT 3
+#define BUZZER 3
 int currentState = REALTIME;
 
 int currentHour = hour();
@@ -16,6 +17,8 @@ void setup() {
   Serial.begin(9600);
   LED_Init();
   alarm_Init();
+  buzzer_init();
+
 }
 
 void loop() {
@@ -24,10 +27,28 @@ void loop() {
   {
     case REALTIME:
       RealTimeDisplay();
+      alarmResume();
 
-      if(button1Release()){
+      if(alarm_triggered() && alarmActive){
+        currentState = BUZZER;
+      }
+
+      if(button2Release() && alarmActive){
+        if(currentState == REALTIME){
+          alarmActive = false;
+          buzzer_off();    
+        }
+        button2Pressed = false;
+      }
+
+      if(button1Release() && currentState == REALTIME){
         currentState = REALTIMEADJUSTMENT;
         button1Pressed = false;
+      }
+
+      if(button2Release() && currentState == REALTIME){
+        currentState = REALTIME;
+        button2Pressed = false;
       }
 
     break;
@@ -45,7 +66,7 @@ void loop() {
         }
       }
 
-      if(button2Release()){
+      if(button2Release() && currentState == REALTIMEADJUSTMENT){
         RealTimeInc();
         button2Pressed = false;
       }
@@ -64,15 +85,16 @@ void loop() {
         }
       }
 
-      if(button2Release()){
+      if(button2Release() && currentState == ALARM){
         AlarmTimeInc();
         button2Pressed = false;
       }
     break;
   
-    case INCREMENT:
-      Serial.println("button2");
-      button2Pressed = false;
+    case BUZZER:
+      if(alarmActive){
+        buzzer_on();
+      }
       currentState = REALTIME;
     break;
     

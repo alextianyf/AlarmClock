@@ -79,10 +79,10 @@ void LED_Clear(){
 }
 
 void time_on(){
-  digits[0] = minute() / 10;
-  digits[1] = minute() % 10;
-  digits[2] = second() / 10;
-  digits[3] = second() % 10;
+  digits[0] = hour() / 10;
+  digits[1] = hour() % 10;
+  digits[2] = minute() / 10;
+  digits[3] = minute() % 10;
 }
 
 void RealTimeDisplay() {
@@ -125,26 +125,6 @@ void RealTimeaAdjustment(){
 
 }
 
-// void RealTimeInc(){
-//   int updateTime = 0;
-//   if(currentRealTimeDisplayPosition == 0){
-//     updateTime = minute() + 10;
-//     setTime(hour(), updateTime, second(),0,0,0);
-//   }
-//   if(currentRealTimeDisplayPosition == 1){
-//     updateTime = minute() + 1;
-//     setTime(hour(), updateTime, second(),0,0,0);
-//   }
-//   if(currentRealTimeDisplayPosition == 2){
-//     updateTime = second() + 10;
-//     setTime(hour(), minute(), updateTime,0,0,0);
-//   }
-//   if(currentRealTimeDisplayPosition == 3){
-//     updateTime = second() + 1;
-//     setTime(hour(), minute(), updateTime,0,0,0);
-//   }
-// }
-
 void RealTimeInc() {
   int newHour = hour();
   int newMinute = minute();
@@ -152,20 +132,16 @@ void RealTimeInc() {
 
   // Determine which time component to increment based on currentRealTimeDisplayPosition
   if (currentRealTimeDisplayPosition == 0) {
-    newMinute += 10;
+    newHour += 10;
   } else if (currentRealTimeDisplayPosition == 1) {
-    newMinute += 1;
+    newHour += 1;
   } else if (currentRealTimeDisplayPosition == 2) {
-    newSecond += 10;
+    newMinute += 10;
   } else if (currentRealTimeDisplayPosition == 3) {
-    newSecond += 1;
+    newMinute += 1;
   }
 
   // Handle minute and second overflow
-  if (newSecond >= 60) {
-    newSecond = 0;
-    newMinute += 1;
-  }
   if (newMinute >= 60) {
     newMinute = 0;
     newHour += 1;

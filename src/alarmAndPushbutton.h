@@ -14,10 +14,15 @@ extern volatile unsigned long lastDebounceTime2;
 extern const unsigned long debounceDelay; // Adjust as needed
 extern int currentDisplayPosition;
 
+extern bool alarmActive;
+
 void alarm_Init();
 void alarmTimeDisplay();
 bool button1Release();
 bool button2Release();
 void AlarmTimeInc();
+bool alarm_triggered();
+void alarmResume();
+
 
 #endif
