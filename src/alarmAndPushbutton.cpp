@@ -18,7 +18,7 @@ unsigned long lastLEDChange = 0;
 int currentDisplayPosition = 0;
 const int segmentUpdateInterval = 500;
 
-int alarmDigits[4] = {0,0,0,0};
+int alarmDigits[4] = {0,7,0,0};
 
 bool button1Release(){
   if(button1Pressed && digitalRead(pushButton1) == LOW){

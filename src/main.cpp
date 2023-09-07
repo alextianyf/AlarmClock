@@ -29,11 +29,6 @@ void loop() {
         currentState = REALTIMEADJUSTMENT;
         button1Pressed = false;
       }
-      
-      // if(button2Release()){
-      //   currentState = INCREMENT;
-      //   button1Pressed = false;
-      // }
 
     break;
 
