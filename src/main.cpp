@@ -10,15 +10,11 @@
 #define BUZZER 3
 int currentState = REALTIME;
 
-int currentHour = hour();
-int currentMinute = minute();
-
 void setup() {
   Serial.begin(9600);
   LED_Init();
   alarm_Init();
   buzzer_init();
-
 }
 
 void loop() {
@@ -54,7 +50,7 @@ void loop() {
     break;
 
     case REALTIMEADJUSTMENT:
-      RealTimeaAdjustment();
+      RealTimeFlash();
       
       if(button1Release()){
         currentRealTimeDisplayPosition++;

@@ -7,17 +7,15 @@ extern int digits[4];
 
 void LED_Init();
 void display_single(int pos, int num);
-void display();
 void LED_Clear();
-void LED_on();
 void RealTimeDisplay();
-void RealTimeaAdjustment();
+void RealTimeFlash();
 void alarm_Init();
 void time_on();
+void RealTimeInc();
 
-//volatile extern bool button2Pressed = false;
 extern int Control_Pin_Array[4];
 extern int currentRealTimeDisplayPosition;
-void RealTimeInc();
+
 
 #endif

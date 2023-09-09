@@ -43,10 +43,16 @@ int Number_Array[10][7] = {
     {1, 1, 1, 1, 0, 1, 1},//NUMBER 9
 };
 
+/*
+OBJECTIVE: Initialize 5641as module
+Init segment in LOW to avoid Segment flashing in the initial state.
+*/
 void LED_Init(){
+  //reset initial displayed number as "0000"
   for(int i = 0; i < 4; i++){
     digits[i] = 0;
   }
+
   //setting segment array connected port as OUTPUT mode and LOW
   for (int i = 0; i < 7; i++){
     pinMode(Segment_Array[i] ,OUTPUT);
@@ -72,12 +78,19 @@ void display_single(int pos, int num) {
   }
 }
 
+/*
+OBJECTIVE: Clear all the LED segment to avoid the Ghosting on 5641as Module
+*/
 void LED_Clear(){
   for (int i = 0; i < 7; i++) {
     digitalWrite(Segment_Array[i], LOW);
   }
 }
 
+/*
+OBJECTIVE: Read <TimeLib.h> provided hour and minute value
+This function should be used inside of loop() and always active
+*/
 void time_on(){
   digits[0] = hour() / 10;
   digits[1] = hour() % 10;
@@ -85,6 +98,9 @@ void time_on(){
   digits[3] = minute() % 10;
 }
 
+/*
+OBJECTIVE: Display all four LEDs in 5641as module
+*/
 void RealTimeDisplay() {
   for (int i = 0; i < 4; i++) {
     digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
@@ -98,8 +114,13 @@ void RealTimeDisplay() {
   }
 }
 
-
-void RealTimeaAdjustment(){
+/*
+OBJECTIVE: Flashing the a single displayed real-time value
+once Interface Switch buttone is pressed, enter REALTIMEADJUSTMENT state
+the real-time display value will start flashing at the first position
+Flashing position depends on currentRealTimeDisplayPosition parameter
+*/
+void RealTimeFlash(){
 
   unsigned long realTime = millis();
   if (realTime - RealTimelastLEDChange > RealTimeUpdateInterval) {
@@ -125,6 +146,11 @@ void RealTimeaAdjustment(){
 
 }
 
+/*
+OBJECTIVE: 
+once Increment buttone is pressed, displayed value will increase at selected position at REALTIMEADJUSTMENT state
+Increasing position depends on currentRealTimeDisplayPosition parameter
+*/
 void RealTimeInc() {
   int newHour = hour();
   int newMinute = minute();

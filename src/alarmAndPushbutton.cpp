@@ -42,8 +42,6 @@ void Pin2Interrupt(){
     button1Pressed = true;
   }
   currentMillis = millis();
-  // Serial.print("Pin2: ");
-  // Serial.println(currentMillis);
 }
 
 void Pin3Interrupt(){
@@ -51,8 +49,6 @@ void Pin3Interrupt(){
     button2Pressed = true;
   }
   currentMillis = millis();
-  // Serial.print("Pin3: ");
-  // Serial.println(currentMillis);
 }
 
 void alarm_Init(){
@@ -113,7 +109,6 @@ bool alarm_triggered(){
   int min10 = minute() / 10;
   int min01 = minute() % 10;
   if(alarmDigits[0] == hour10 && alarmDigits[1] == hour01 && alarmDigits[2] == min10 && alarmDigits[3] == min01){
-    //alarmActive = true;
     return true;
   }
   return false;
@@ -122,7 +117,6 @@ bool alarm_triggered(){
 void alarmResume(){
 
   int temp = alarmDigits[3] + 1;
-  //Serial.println(temp);
   if(alarmActive == false && temp == digits[3]){
     alarmActive = true;
   }
