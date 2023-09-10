@@ -30,6 +30,12 @@ void loop() {
       if(alarm_triggered()){
         currentState = BUZZER;
       }
+      
+      //check if alarm can be resume
+      //if so, reset alarmAtive flag
+      if(alarmResume()){
+        alarmActive = true;
+      }
 
       //at current state, if interface button is pressed, move to RTINC state
       if(button1Release()){
@@ -95,7 +101,6 @@ void loop() {
       if(button2Release() && alarmActive){
         alarmActive = false;
         buzzer_off();    
-        alarmResume();//need opt
         currentState = REALTIME;
         button2Pressed = false;
       }      

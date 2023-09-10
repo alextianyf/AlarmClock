@@ -22,7 +22,7 @@ bool button1Release();
 bool button2Release();
 void AlarmTimeInc();
 bool alarm_triggered();
-void alarmResume();
+bool alarmResume();
 
 
 #endif

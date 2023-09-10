@@ -19,9 +19,14 @@ unsigned long lastLEDChange = 0;
 int currentDisplayPosition = 0;
 const int segmentUpdateInterval = 500;
 
-int alarmDigits[4] = {0,0,0,1};
+int alarmDigits[4] = {0,7,0,0};
+int alarmbuffer[4] = {0,0,0,0};//used to store alarm trigger time
 
 bool alarmActive = true;
+
+unsigned long AlarmLastResetTime = 0;
+unsigned long AlarmResetDuration = 1000;
+
 
 /*
 OBJECTIVE: Detect if Intefacing button is being pressed
@@ -116,17 +121,49 @@ bool alarm_triggered(){
     int min10 = minute() / 10;
     int min01 = minute() % 10;
     if(alarmDigits[0] == hour10 && alarmDigits[1] == hour01 && alarmDigits[2] == min10 && alarmDigits[3] == min01){
+      for(int i = 0; i < 4; i++){
+        alarmbuffer[i] = alarmDigits[i];
+      }
       return true;
     }
     return false;
   }
   return false;
+  
 }
 
-void alarmResume(){
+bool alarmResume(){
+  if(!alarmActive){
+    int hour10 = alarmbuffer[0];
+    int hour01 = alarmbuffer[1];
+    int min10 = alarmbuffer[2];
+    int min01 = alarmbuffer[3];
 
-  int temp = alarmDigits[3] + 1;
-  if(alarmActive == false && temp == digits[3]){
-    alarmActive = true;
+    min01 = min01 + 1;
+    if(min01>=9){
+      min01 = 0;
+      min10 = min10 + 1;
+      if(min10>=6){
+        min10 = 0;
+        hour01 = hour01 + 1;
+        if(hour01>=10){
+          hour01 = 0;
+          hour10 = hour10 + 1;
+          if(hour10>=3){
+            hour10 = 0;
+          }
+        }
+      }
+    }
+
+    if(digits[0] == hour10 && digits[1] == hour01 && digits[2] == min10 && digits[3] == min01){
+      return true;
+    }else{
+      return false;
+    }
   }
+  else{
+    return false;
+  }
+
 }
