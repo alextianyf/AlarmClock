@@ -45,7 +45,9 @@ int Number_Array[10][7] = {
 
 /*
 OBJECTIVE: Initialize 5641as module
-Init segment in LOW to avoid Segment flashing in the initial state.
+PARAMETERS: void
+RETURN: void
+NOTE: Init segment in LOW to avoid Segment flashing in the initial state.
 */
 void LED_Init(){
   //reset initial displayed number as "0000"
@@ -62,15 +64,18 @@ void LED_Init(){
   //setting LED control connect port as OUTPUT mode and HIGH
   for (int i = 0; i < 4; i++){
     pinMode(Control_Pin_Array[i] ,OUTPUT);
+    //LEDs all turn off when initialize
     digitalWrite(Control_Pin_Array[i], HIGH);
   }
 }
 
 /*
 OBJECTIVE: Display number on a designated position
-Parameters:
+PARAMETERS:
     pos: the position of the LED
     num: the actual number will be displayed
+RETURN: void
+NOTE: void
 */
 void display_single(int pos, int num) {
   for (int i = 0; i < 7; i++) {
@@ -80,6 +85,9 @@ void display_single(int pos, int num) {
 
 /*
 OBJECTIVE: Clear all the LED segment to avoid the Ghosting on 5641as Module
+PARAMETERS: void
+RETURN: void
+NOTE: void
 */
 void LED_Clear(){
   for (int i = 0; i < 7; i++) {
@@ -89,7 +97,9 @@ void LED_Clear(){
 
 /*
 OBJECTIVE: Read <TimeLib.h> provided hour and minute value
-This function should be used inside of loop() and always active
+PARAMETERS: void
+RETURN: void
+NOTE: This function should be used inside of loop() and always active
 */
 void time_on(){
   digits[0] = hour() / 10;
@@ -100,6 +110,9 @@ void time_on(){
 
 /*
 OBJECTIVE: Display all four LEDs in 5641as module
+PARAMETERS: void
+RETURN: void
+NOTE: void
 */
 void RealTimeDisplay() {
   for (int i = 0; i < 4; i++) {
@@ -116,7 +129,9 @@ void RealTimeDisplay() {
 
 /*
 OBJECTIVE: Flashing the a single displayed real-time value
-once Interface Switch buttone is pressed, enter REALTIMEADJUSTMENT state
+PARAMETERS: void
+RETURN: void
+NOTE: once Interface Switch buttone is pressed, enter REALTIMEADJUSTMENT state
 the real-time display value will start flashing at the first position
 Flashing position depends on currentRealTimeDisplayPosition parameter
 */
@@ -147,8 +162,10 @@ void RealTimeFlash(){
 }
 
 /*
-OBJECTIVE: 
-once Increment buttone is pressed, displayed value will increase at selected position at REALTIMEADJUSTMENT state
+OBJECTIVE: Increase LED displayed value at selected position
+PARAMETERS: void
+RETURN: void
+NOTE: once Increment buttone is pressed, displayed value will increase at selected position at REALTIMEADJUSTMENT state
 Increasing position depends on currentRealTimeDisplayPosition parameter
 */
 void RealTimeInc() {

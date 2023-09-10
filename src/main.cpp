@@ -4,13 +4,15 @@
 #include "alarmAndPushbutton.h"
 #include "activeBuzzer.h"
 
-#define REALTIME 0
-#define REALTIMEADJUSTMENT 1
-#define ALARM 2
-#define BUZZER 3
-int currentState = REALTIME;
+#define REALTIME 1    //Real Time Interface
+#define RTINC 2       //Real Time Increment Interface
+#define ALARM 3       //Alarm interface
+#define BUZZER 4      //Buzzer active state
+#define DISMISS 5     //Dismiss buzzer state
+int currentState;
 
 void setup() {
+  currentState = REALTIME;
   Serial.begin(9600);
   LED_Init();
   alarm_Init();
@@ -23,33 +25,27 @@ void loop() {
   {
     case REALTIME:
       RealTimeDisplay();
-      alarmResume();
 
-      if(alarm_triggered() && alarmActive){
+      //check if alarm is triggered
+      if(alarm_triggered()){
         currentState = BUZZER;
       }
 
-      if(button2Release() && alarmActive){
-        if(currentState == REALTIME){
-          alarmActive = false;
-          buzzer_off();    
-        }
-        button2Pressed = false;
-      }
-
-      if(button1Release() && currentState == REALTIME){
-        currentState = REALTIMEADJUSTMENT;
+      //at current state, if interface button is pressed, move to RTINC state
+      if(button1Release()){
+        currentState = RTINC;
         button1Pressed = false;
       }
 
-      if(button2Release() && currentState == REALTIME){
+      //at current state, if interface button is pressed, do nothing
+      if(button2Release()){
         currentState = REALTIME;
         button2Pressed = false;
       }
 
     break;
 
-    case REALTIMEADJUSTMENT:
+    case RTINC:
       RealTimeFlash();
       
       if(button1Release()){
@@ -58,11 +54,10 @@ void loop() {
         if(currentRealTimeDisplayPosition >= 4){
           currentRealTimeDisplayPosition = 0;
           currentState = ALARM;
-          button1Pressed = false;
         }
       }
 
-      if(button2Release() && currentState == REALTIMEADJUSTMENT){
+      if(button2Release()){
         RealTimeInc();
         button2Pressed = false;
       }
@@ -81,7 +76,7 @@ void loop() {
         }
       }
 
-      if(button2Release() && currentState == ALARM){
+      if(button2Release()){
         AlarmTimeInc();
         button2Pressed = false;
       }
@@ -91,9 +86,21 @@ void loop() {
       if(alarmActive){
         buzzer_on();
       }
-      currentState = REALTIME;
+      currentState = DISMISS;
     break;
-    
+
+    case DISMISS:
+      RealTimeDisplay();
+      currentState = BUZZER;
+      if(button2Release() && alarmActive){
+        alarmActive = false;
+        buzzer_off();    
+        alarmResume();//need opt
+        currentState = REALTIME;
+        button2Pressed = false;
+      }      
+    break;
+
     default:
       break;
   }

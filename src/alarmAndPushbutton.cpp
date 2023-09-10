@@ -19,10 +19,16 @@ unsigned long lastLEDChange = 0;
 int currentDisplayPosition = 0;
 const int segmentUpdateInterval = 500;
 
-int alarmDigits[4] = {0,7,0,0};
+int alarmDigits[4] = {0,0,0,1};
 
 bool alarmActive = true;
 
+/*
+OBJECTIVE: Detect if Intefacing button is being pressed
+PARAMETERS: void
+RETURN:
+  Boolean type
+*/
 bool button1Release(){
   if(button1Pressed && digitalRead(pushButton1) == LOW){
     return true;
@@ -104,12 +110,15 @@ void AlarmTimeInc() {
 }
 
 bool alarm_triggered(){
-  int hour10 = hour() / 10;
-  int hour01 = hour() % 10;
-  int min10 = minute() / 10;
-  int min01 = minute() % 10;
-  if(alarmDigits[0] == hour10 && alarmDigits[1] == hour01 && alarmDigits[2] == min10 && alarmDigits[3] == min01){
-    return true;
+  if(alarmActive){
+    int hour10 = hour() / 10;
+    int hour01 = hour() % 10;
+    int min10 = minute() / 10;
+    int min01 = minute() % 10;
+    if(alarmDigits[0] == hour10 && alarmDigits[1] == hour01 && alarmDigits[2] == min10 && alarmDigits[3] == min01){
+      return true;
+    }
+    return false;
   }
   return false;
 }
