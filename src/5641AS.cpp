@@ -115,6 +115,7 @@ RETURN: void
 NOTE: void
 */
 void RealTimeDisplay() {
+  time_on();
   for (int i = 0; i < 4; i++) {
     digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
     display_single(i, digits[i]); // Display the current digit
@@ -136,7 +137,7 @@ the real-time display value will start flashing at the first position
 Flashing position depends on currentRealTimeDisplayPosition parameter
 */
 void RealTimeFlash(){
-
+  time_on();
   unsigned long realTime = millis();
   if (realTime - RealTimelastLEDChange > RealTimeUpdateInterval) {
     realTimeCounter ++;

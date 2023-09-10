@@ -15,9 +15,11 @@ volatile unsigned long lastDebounceTime1 = 0;
 //volatile unsigned long lastDebounceTime2 = 0;
 const unsigned long debounceDelay = 150; // Adjust as needed
 unsigned long lastLEDChange = 0;
+unsigned long lastOperationTime = 0;
 
 int currentDisplayPosition = 0;
 const int segmentUpdateInterval = 500;
+const int OpeationDuration = 5000;
 
 int alarmDigits[4] = {0,7,0,0};
 int alarmbuffer[4] = {0,0,0,0};//used to store alarm trigger time
