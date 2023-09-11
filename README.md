@@ -30,9 +30,12 @@
 
 **Hardware Connection:**
 
-this part will be added later
+![Hardware Layout](lib\Hardware_Layout.png)
 
+- NOTE: The CAD schematic will be added in the future
 
 <br/>
 
 **State Machine:**
+
+![State Machine Diagram](lib\State_Machine_Diagram.png)
