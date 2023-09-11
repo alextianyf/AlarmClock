@@ -38,4 +38,4 @@
 
 **State Machine:**
 
-![State Machine Diagram](lib\State_Machine_Diagram.png)
+![State Machine Diagram](images\State_Machine_Diagram.png)
