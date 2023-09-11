@@ -30,7 +30,7 @@
 
 **Hardware Connection:**
 
-![Hardware Layout](lib\Hardware_Layout.png)
+![Hardware Layout](Hardware_Layout.png)
 
 - NOTE: The CAD schematic will be added in the future
 
