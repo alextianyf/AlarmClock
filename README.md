@@ -30,7 +30,7 @@
 
 **Hardware Connection:**
 
-![Hardware Layout](lib\Hardware_Layout.png)
+![Hardware Layout](AlarmClock\lib\Hardware_Layout.png)
 
 - NOTE: The CAD schematic will be added in the future
 
@@ -38,4 +38,4 @@
 
 **State Machine:**
 
-![State Machine Diagram](lib\State_Machine_Diagram.png)
+![State Machine Diagram](AlarmClock\lib\State_Machine_Diagram.png)
