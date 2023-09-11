@@ -7,8 +7,9 @@ int currentRealTimeDisplayPosition = 0;
 const int RealTimeUpdateInterval = 500;
 int realTimeCounter = 0;
 
-//use to store LED displayed number
-int digits[4] = {0,0,0,0};
+//use to store the actual displayed number on corresponding LED position
+//Displayed Value at: 1st LED   2nd LED    3rd LED   4th LED  
+int digits[4] =       {  0,        0,         0,        0 };
 
 //Segment Pin number
 int A = 7;
@@ -43,12 +44,12 @@ int Number_Array[10][7] = {
     {1, 1, 1, 1, 0, 1, 1},//NUMBER 9
 };
 
-/*
-OBJECTIVE: Initialize 5641as module
-PARAMETERS: void
-RETURN: void
-NOTE: Init segment in LOW to avoid Segment flashing in the initial state.
-*/
+/**
+ * OBJECTIVE: Initialize 5641as module
+ * PARAMETERS: void
+ * RETURN: void
+ * NOTE: Init segment in LOW to avoid Segment flashing in the initial state.
+ */
 void LED_Init(){
   //reset initial displayed number as "0000"
   for(int i = 0; i < 4; i++){
@@ -69,38 +70,44 @@ void LED_Init(){
   }
 }
 
-/*
-OBJECTIVE: Display number on a designated position
-PARAMETERS:
-    pos: the position of the LED
+/**
+ * OBJECTIVE: Display number on a designated position
+ * PARAMETERS:
+    pos: displayed location
     num: the actual number will be displayed
-RETURN: void
-NOTE: void
-*/
+ * RETURN: void
+ * NOTE: void
+ */
 void display_single(int pos, int num) {
+  digitalWrite(Control_Pin_Array[pos], LOW); // Display location selection
+
+  //copy number to segment
   for (int i = 0; i < 7; i++) {
     digitalWrite(Segment_Array[i], Number_Array[num][i]);
   }
 }
 
-/*
-OBJECTIVE: Clear all the LED segment to avoid the Ghosting on 5641as Module
-PARAMETERS: void
-RETURN: void
-NOTE: void
-*/
+/**
+ * OBJECTIVE: Clear all the LED segment to avoid the Ghosting on 5641as Module
+ * PARAMETERS: void
+ * RETURN: void
+ * NOTE: void
+ */
 void LED_Clear(){
   for (int i = 0; i < 7; i++) {
     digitalWrite(Segment_Array[i], LOW);
   }
 }
 
-/*
-OBJECTIVE: Read <TimeLib.h> provided hour and minute value
-PARAMETERS: void
-RETURN: void
-NOTE: This function should be used inside of loop() and always active
-*/
+/**
+ * OBJECTIVE: Read <TimeLib.h> provided hour() and minute() value
+ * PARAMETERS: void
+ * RETURN: void
+ * NOTE: when hour() or minute() first active, they are init to 0
+        hour() range 0 - 23; minute range 0 - 59
+        hour() or minute() should be updated before displaying,
+        so time_on() should be called everytime before LEDs update its displayed value
+ */
 void time_on(){
   digits[0] = hour() / 10;
   digits[1] = hour() % 10;
@@ -108,18 +115,17 @@ void time_on(){
   digits[3] = minute() % 10;
 }
 
-/*
-OBJECTIVE: Display all four LEDs in 5641as module
-PARAMETERS: void
-RETURN: void
-NOTE: void
+/**
+* OBJECTIVE: Display all four LEDs in 5641as module
+* PARAMETERS: void
+* RETURN: void
+* NOTE: void
 */
 void RealTimeDisplay() {
   time_on();
+  //scan all four LEDs
   for (int i = 0; i < 4; i++) {
-    digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
     display_single(i, digits[i]); // Display the current digit
-    
     //delay(1); // Optional - A brief delay to reduce flicker
     
     LED_Clear();//Clear all the segment
@@ -128,30 +134,33 @@ void RealTimeDisplay() {
   }
 }
 
-/*
-OBJECTIVE: Flashing the a single displayed real-time value
-PARAMETERS: void
-RETURN: void
-NOTE: once Interface Switch buttone is pressed, enter REALTIMEADJUSTMENT state
-the real-time display value will start flashing at the first position
-Flashing position depends on currentRealTimeDisplayPosition parameter
-*/
+/**
+ * OBJECTIVE: Flashing the a single displayed real-time value
+ * PARAMETERS: void
+ * RETURN: void
+ * NOTE: once Interface Switch buttone is pressed, enter REALTIMEADJUSTMENT state
+        the real-time display value will start flashing at the first position
+        Flashing position depends on currentRealTimeDisplayPosition parameter
+ */
 void RealTimeFlash(){
-  time_on();
+  time_on();//necessary to update hour() and minute() before display
+
+  //flash the selected LED position at half second duration
   unsigned long realTime = millis();
   if (realTime - RealTimelastLEDChange > RealTimeUpdateInterval) {
     realTimeCounter ++;
     RealTimelastLEDChange = millis();
   }
 
+  //use realTimeCounter to track half second duration
   bool displayDigits = ((realTimeCounter % 2) == 0);
 
   if(displayDigits){
     RealTimeDisplay();
   }else{
+    //skip scan the selected position
     for (int i = 0; i < 4; i++) {
       if(i != currentRealTimeDisplayPosition){
-        digitalWrite(Control_Pin_Array[i], LOW); // Activate the current digit
         display_single(i, digits[i]); // Display the current digit
         
         LED_Clear();//Clear all the segment
@@ -162,17 +171,17 @@ void RealTimeFlash(){
 
 }
 
-/*
-OBJECTIVE: Increase LED displayed value at selected position
-PARAMETERS: void
-RETURN: void
-NOTE: once Increment buttone is pressed, displayed value will increase at selected position at REALTIMEADJUSTMENT state
-Increasing position depends on currentRealTimeDisplayPosition parameter
-*/
+/**
+ * OBJECTIVE: Increase LED displayed value at selected position
+ * PARAMETERS: void
+ * RETURN: void
+ * NOTE: once Increment buttone is pressed, displayed value will increase at selected position at REALTIMEADJUSTMENT state
+        Increasing position depends on currentRealTimeDisplayPosition parameter
+ */
 void RealTimeInc() {
+  //buff the current hour and minute value to be used later
   int newHour = hour();
   int newMinute = minute();
-  int newSecond = second();
 
   // Determine which time component to increment based on currentRealTimeDisplayPosition
   if (currentRealTimeDisplayPosition == 0) {
@@ -195,6 +204,6 @@ void RealTimeInc() {
   }
 
   // Set the new time
-  setTime(newHour, newMinute, newSecond, 0, 0, 0);
+  setTime(newHour, newMinute, second(), 0, 0, 0);
 }
 

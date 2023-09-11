@@ -3,8 +3,6 @@
 
 #include <Arduino.h>
 
-extern int digits[4];
-
 void LED_Init();
 void display_single(int pos, int num);
 void LED_Clear();
@@ -14,6 +12,7 @@ void alarm_Init();
 void time_on();
 void RealTimeInc();
 
+extern int digits[4];
 extern int Control_Pin_Array[4];
 extern int currentRealTimeDisplayPosition;
 

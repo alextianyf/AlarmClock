@@ -9,14 +9,12 @@ extern const int pushButton2;
 extern volatile bool button1Pressed;
 extern volatile bool button2Pressed;
 
-extern volatile unsigned long lastDebounceTime1;
-extern volatile unsigned long lastDebounceTime2;
-extern const unsigned long debounceDelay; // Adjust as needed
+extern const unsigned long debounceDelay; 
 extern int currentDisplayPosition;
 
 extern bool alarmActive;
 
-void alarm_Init();
+void btn_Init();
 void alarmTimeDisplay();
 bool button1Release();
 bool button2Release();
